@@ -1,5 +1,53 @@
-<!-- 
-local Player = game.Players.LocalPlayer
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error 67</title>
+    <style>
+        body {
+            background-color: #111;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #ff4d4d;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #aaa;
+        }
+
+        /* Полностью скрываем наш Lua-код от глаз пользователей на странице */
+        #lua-code-storage {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Error 67</h1>
+        <p>Don't steal my code!</p>
+    </div>
+
+    <pre id="lua-code-storage">local Player = game.Players.LocalPlayer
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 
@@ -108,14 +156,17 @@ Stem.Position = UDim2.new(0.5, 0, 0.6, 0)
 Stem.AnchorPoint = Vector2.new(0.5, 0)
 Stem.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 
--- Прыжок через ChangeState как в твоём скрипте
+-- Исправленный прыжок: добавлена строгая проверка на текущее состояние
 local function doJump()
     local char = Player.Character
     if char then
         local hum = char:FindFirstChildOfClass("Humanoid")
-        if hum and hum.FloorMaterial ~= Enum.Material.Air
-            and hum:GetState() ~= Enum.HumanoidStateType.Jumping then
-            hum:ChangeState(Enum.HumanoidStateType.Jumping)
+        if hum and hum.FloorMaterial ~= Enum.Material.Air then
+            local currentState = hum:GetState()
+            -- Проверяем, что персонаж не находится уже в процессе прыжка или падения
+            if currentState ~= Enum.HumanoidStateType.Jumping and currentState ~= Enum.HumanoidStateType.Freefall then
+                hum:ChangeState(Enum.HumanoidStateType.Jumping)
+            end
         end
     end
 end
@@ -279,55 +330,7 @@ task.spawn(function()
         end)
     end
 end)
-
-local player = game.Players.LocalPlayer
-local currentSpeed = player.Character.Humanoid.WalkSpeed
-player.Character.Humanoid.WalkSpeed = currentSpeed
--->
-
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Error 67</title>
-    <style>
-        body {
-            background-color: #111;
-            color: #fff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
-
-        .container {
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            color: #ff4d4d;
-            font-weight: 700;
-        }
-
-        p {
-            font-size: 1.2rem;
-            color: #aaa;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="container">
-        <h1>Error 67</h1>
-        <p>Don't steal my code!</p>
-    </div>
+</pre>
 
 </body>
 </html>
